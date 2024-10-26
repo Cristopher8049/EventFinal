@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-
+﻿using Microsoft.EntityFrameworkCore;
 using EventManagement.Model;
-
 namespace EventManagement.DAL.DBContext;
 
 public partial class EventManagementContext : DbContext
@@ -65,7 +61,7 @@ public partial class EventManagementContext : DbContext
                 .HasColumnType("text")
                 .HasColumnName("comment");
             entity.Property(e => e.CommentDate)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("NOW()") 
                 .HasColumnType("datetime")
                 .HasColumnName("commentDate");
             entity.Property(e => e.EventId).HasColumnName("eventID");
@@ -75,9 +71,7 @@ public partial class EventManagementContext : DbContext
                 .HasForeignKey(d => d.EventId)
                 .HasConstraintName("FK__Comment__eventID__6C190EBB");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Comments)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Comment__userID__6B24EA82");
+            
         });
 
         modelBuilder.Entity<Event>(entity =>
@@ -113,7 +107,7 @@ public partial class EventManagementContext : DbContext
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("price");
             entity.Property(e => e.RegistrationDate)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("NOW()") 
                 .HasColumnType("datetime")
                 .HasColumnName("registrationDate");
             entity.Property(e => e.StartDate)
@@ -161,7 +155,7 @@ public partial class EventManagementContext : DbContext
                 .HasColumnType("text")
                 .HasColumnName("message");
             entity.Property(e => e.NotificationDate)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("NOW()") 
                 .HasColumnType("datetime")
                 .HasColumnName("notificationDate");
             entity.Property(e => e.Type)
@@ -174,9 +168,6 @@ public partial class EventManagementContext : DbContext
                 .HasForeignKey(d => d.EventId)
                 .HasConstraintName("FK__Notificat__event__5CD6CB2B");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Notifications)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Notificat__userI__5BE2A6F2");
         });
 
         modelBuilder.Entity<Payment>(entity =>
@@ -191,7 +182,7 @@ public partial class EventManagementContext : DbContext
                 .HasColumnName("amount");
             entity.Property(e => e.EventId).HasColumnName("eventID");
             entity.Property(e => e.PaymentDate)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("NOW()") 
                 .HasColumnType("datetime")
                 .HasColumnName("paymentDate");
             entity.Property(e => e.PaymentStatus)
@@ -204,9 +195,6 @@ public partial class EventManagementContext : DbContext
                 .HasForeignKey(d => d.EventId)
                 .HasConstraintName("FK__Payment__eventID__628FA481");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Payments)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Payment__userID__619B8048");
         });
 
         modelBuilder.Entity<PrivateEventAccess>(entity =>
@@ -226,10 +214,6 @@ public partial class EventManagementContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__PrivateEv__event__571DF1D5");
 
-            entity.HasOne(d => d.User).WithMany(p => p.PrivateEventAccesses)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PrivateEv__userI__5629CD9C");
         });
 
         modelBuilder.Entity<Rol>(entity =>
@@ -326,10 +310,6 @@ public partial class EventManagementContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__UserEvent__event__52593CB8");
 
-            entity.HasOne(d => d.User).WithMany(p => p.UserEvents)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__UserEvent__userI__5165187F");
         });
 
         OnModelCreatingPartial(modelBuilder);
